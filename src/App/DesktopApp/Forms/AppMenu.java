@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 import App.DesktopApp.CustomControl.PatButton;
 import Infrastructure.AppConfig;
 
-
 public class AppMenu extends JPanel {
     private final List<PatButton> menuItems = new ArrayList<>();
     private final JPanel buttonsPanel = new JPanel();
@@ -31,7 +30,7 @@ public class AppMenu extends JPanel {
 
         // add-logo
         try {
-            Image logo = ImageIO.read(AppConfig.getImgMain());
+            Image logo = ImageIO.read(AppConfig.getImgLogo());
             logo = logo.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
             add(new JLabel(new ImageIcon(logo)));
         } catch (IOException e) {

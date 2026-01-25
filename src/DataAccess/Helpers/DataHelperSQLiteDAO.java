@@ -15,12 +15,12 @@ import java.time.format.DateTimeFormatter;
 import Infrastructure.AppConfig;
 import Infrastructure.AppException;
 
-public class DataHelperSQLiteDAO <T> implements IDAO<T> {
-    protected final Class<T>DTOClass;
-    protected final String  tableName;
-    protected final String  tablePK;
+public class DataHelperSQLiteDAO<T> implements IDAO<T> {
+    protected final Class<T> DTOClass;
+    protected final String tableName;
+    protected final String tablePK;
 
-    private static final String DBPath = AppConfig.getDATABASE(); 
+    private static final String DBPath = AppConfig.getDATABASE();
     private static Connection conn = null;
 
     protected static synchronized Connection openConnection() throws SQLException {
@@ -42,6 +42,7 @@ public class DataHelperSQLiteDAO <T> implements IDAO<T> {
 
     /**
      * Construye la relacion entre la clase DTO y la tabla de la base de datos
+     * 
      * @param dtoClass  : Nombre de la clase DTO
      * @param tableName : Nombre de la tabla
      * @param tablePK   : Nombre del PK de la tabla
@@ -53,9 +54,9 @@ public class DataHelperSQLiteDAO <T> implements IDAO<T> {
         } catch (SQLException e) {
             throw new AppException(null, e, getClass(), "DataHelperSQLiteDAO");
         }
-        this.DTOClass  = dtoClass;
+        this.DTOClass = dtoClass;
         this.tableName = tableName;
-        this.tablePK   = tablePK;
+        this.tablePK = tablePK;
     }
 
     @Override
@@ -69,9 +70,9 @@ public class DataHelperSQLiteDAO <T> implements IDAO<T> {
             String name = field.getName();
             // Excluir PK y campos por defecto y auditoria
             if (!name.equalsIgnoreCase(tablePK)
-                && !name.equalsIgnoreCase("Estado")
-                && !name.equalsIgnoreCase("FechaCreacion")
-                && !name.equalsIgnoreCase("FechaModifica")) {
+                    && !name.equalsIgnoreCase("Estado")
+                    && !name.equalsIgnoreCase("FechaCreacion")
+                    && !name.equalsIgnoreCase("FechaModifica")) {
                 columns.append(name).append(",");
                 placeholders.append("?,");
             }
@@ -88,10 +89,10 @@ public class DataHelperSQLiteDAO <T> implements IDAO<T> {
             for (Field field : fields) {
                 String name = field.getName();
                 if (!name.equalsIgnoreCase(tablePK)
-                    && !name.equalsIgnoreCase("Estado")
-                    && !name.equalsIgnoreCase("FechaCreacion")
-                    && !name.equalsIgnoreCase("FechaModifica")) 
-                        stmt.setObject(index++, field.get(entity));
+                        && !name.equalsIgnoreCase("Estado")
+                        && !name.equalsIgnoreCase("FechaCreacion")
+                        && !name.equalsIgnoreCase("FechaModifica"))
+                    stmt.setObject(index++, field.get(entity));
             }
             return (stmt.executeUpdate() > 0);
         } catch (SQLException | IllegalAccessException e) {
@@ -141,7 +142,7 @@ public class DataHelperSQLiteDAO <T> implements IDAO<T> {
                 return stmt.executeUpdate() > 0;
             }
 
-        }   catch (SQLException | IllegalAccessException e) {
+        } catch (SQLException | IllegalAccessException e) {
             throw new AppException(null, e, getClass(), "update");
         }
     }
@@ -152,9 +153,9 @@ public class DataHelperSQLiteDAO <T> implements IDAO<T> {
         try (PreparedStatement stmt = openConnection().prepareStatement(sql)) {
             stmt.setString(1, "X");
             stmt.setString(2, getDataTimeNow());
-            stmt.setInt   (3, id);
+            stmt.setInt(3, id);
             return stmt.executeUpdate() > 0;
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new AppException(null, e, getClass(), "delete");
         }
     }
@@ -167,7 +168,7 @@ public class DataHelperSQLiteDAO <T> implements IDAO<T> {
             try (ResultSet rs = stmt.executeQuery()) {
                 return rs.next() ? mapResultSetToEntity(rs) : null;
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new AppException(null, e, getClass(), "readBy");
         }
     }
@@ -177,7 +178,7 @@ public class DataHelperSQLiteDAO <T> implements IDAO<T> {
         List<T> list = new ArrayList<>();
         String sql = String.format("SELECT * FROM %s WHERE Estado = 'A'", tableName);
         try (PreparedStatement stmt = openConnection().prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+                ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 list.add(mapResultSetToEntity(rs));
             }
@@ -191,27 +192,29 @@ public class DataHelperSQLiteDAO <T> implements IDAO<T> {
     public Integer getMaxReg(String tableCelName) throws AppException {
         String sql = String.format("SELECT MAX(%s) FROM %s WHERE Estado = 'A'", tableCelName, tableName);
         try (PreparedStatement stmt = openConnection().prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+                ResultSet rs = stmt.executeQuery()) {
             return rs.next() ? rs.getInt(1) : 0;
         } catch (SQLException e) {
             throw new AppException(null, e, getClass(), "getMaxReg(...)");
         }
     }
+
     @Override
     public Integer getMinReg(String tableCelName) throws AppException {
         String sql = String.format("SELECT MIN(%s) FROM %s WHERE Estado = 'A'", tableCelName, tableName);
         try (PreparedStatement stmt = openConnection().prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+                ResultSet rs = stmt.executeQuery()) {
             return rs.next() ? rs.getInt(1) : 0;
         } catch (SQLException e) {
             throw new AppException(null, e, getClass(), "getMinReg(...)");
         }
     }
+
     @Override
     public Integer getCountReg() throws AppException {
         String sql = String.format("SELECT COUNT(*) FROM %s WHERE Estado = 'A'", tableName);
         try (PreparedStatement stmt = openConnection().prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+                ResultSet rs = stmt.executeQuery()) {
             return rs.next() ? rs.getInt(1) : 0;
         } catch (SQLException e) {
             throw new AppException(null, e, getClass(), "getCountReg(...)");
@@ -234,7 +237,8 @@ public class DataHelperSQLiteDAO <T> implements IDAO<T> {
                 field.set(instance, val);
             }
             return instance;
-        } catch (SQLException | NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchFieldException e) {
+        } catch (SQLException | NoSuchMethodException | InvocationTargetException | InstantiationException
+                | IllegalAccessException | NoSuchFieldException e) {
             throw new AppException(null, e, getClass(), "mapResultSetToEntity");
         }
     }

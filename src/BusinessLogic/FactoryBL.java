@@ -6,7 +6,7 @@ import java.util.List;
 import DataAccess.Interfaces.IDAO;
 import Infrastructure.AppException;
 
-public class FactoryBL<T>  {
+public class FactoryBL<T> {
     private final IDAO<T> oDAO;
 
     public FactoryBL(Class<? extends IDAO<T>> classDAO) {
@@ -20,11 +20,11 @@ public class FactoryBL<T>  {
 
     // Constructor que usa un Supplier para crear la instancia de T
     // public FactoryBL(Supplier<IDAO<T>> supplier) {
-    //     this.oDAO = supplier.get(); 
+    // this.oDAO = supplier.get();
     // }
- 
+
     public List<T> getAll() throws AppException {
-         return oDAO.readAll();
+        return oDAO.readAll();
     }
 
     public T getBy(Integer id) throws AppException {
@@ -43,15 +43,15 @@ public class FactoryBL<T>  {
         return oDAO.delete(id);
     }
 
-    public Integer getMaxReg(String cellName) throws AppException{
+    public Integer getMaxReg(String cellName) throws AppException {
         return oDAO.getMaxReg(cellName);
     }
 
-    public Integer getMinReg(String cellName) throws AppException{
+    public Integer getMinReg(String cellName) throws AppException {
         return oDAO.getMinReg(cellName);
     }
 
-    public Integer getCountReg() throws Exception{
+    public Integer getCountReg() throws Exception {
         return oDAO.getCountReg();
     }
 }

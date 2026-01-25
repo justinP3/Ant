@@ -11,26 +11,26 @@ import App.DesktopApp.CustomControl.PatButton;
 import Infrastructure.AppMSG;
 
 public class AppStart extends JFrame {
-    AppMenu   pnlMenu = new AppMenu();
-    JPanel    pnlMain = new PHome();
+    AppMenu pnlMenu = new AppMenu();
+    JPanel pnlMain = new PHome();
 
     public AppStart(String tilteApp) {
         initComponents(tilteApp);
- 
-        PatButton btnHome   = new PatButton("🐜 Home");
-        PatButton btnSexo   = new PatButton("🐜 Sexo");
-        PatButton btnHormiga= new PatButton("🐜 Tipo de Hormiga");
-        PatButton btnTest   = new PatButton("🐜 validar");
 
-        btnHome   .addActionListener(e -> setPanel(new PHome()));
-        btnSexo   .addActionListener(e -> setPanel(new PSexo()));
-        btnHormiga.addActionListener(e -> setPanel(new PHome()));
-        btnTest   .addActionListener(e -> AppMSG.showError("mensaje de error"));
+        PatButton btnHome = new PatButton("🐜 Home");
+        PatButton btnSexo = new PatButton("🐜 Sexo");
+        PatButton btnHormiga = new PatButton("🐜 Hormigas Guardadas");
+        PatButton btnTest = new PatButton("🐜 validar");
 
-        pnlMenu.addMenuItem(btnHome   );
-        pnlMenu.addMenuItem(btnSexo   );    
+        btnHome.addActionListener(e -> setPanel(new PHome()));
+        btnSexo.addActionListener(e -> setPanel(new PSexo()));
+        btnHormiga.addActionListener(e -> setPanel(new PHormiga()));
+        btnTest.addActionListener(e -> AppMSG.showError("mensaje de error"));
+
+        pnlMenu.addMenuItem(btnHome);
+        pnlMenu.addMenuItem(btnSexo);
         pnlMenu.addMenuItem(btnHormiga);
-        pnlMenu.addMenuItem(btnTest   );
+        pnlMenu.addMenuItem(btnTest);
 
     }
 
